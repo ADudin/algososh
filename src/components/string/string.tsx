@@ -5,7 +5,6 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
-
 import { ElementStates } from "../../types/element-states";
 
 interface IString {
@@ -81,7 +80,6 @@ export const StringComponent: React.FC = () => {
         <div className={styles.input__container}>
 
           <Input
-            name='string'
             maxLength={MAX_INPUT_SYMBOLS_LENGTH}
             onChange={handleChange}
             value={value}
@@ -101,7 +99,7 @@ export const StringComponent: React.FC = () => {
 
       </form>
 
-      <div className={styles.string}>
+      <div className={styles.display}>
         {
           stringValue.length > 1 ?
           stringValue.map((item, i) => <Circle key={i} letter={item.letter} state={item.state}/>) :
