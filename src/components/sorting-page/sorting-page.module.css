@@ -1,0 +1,36 @@
+.controls__container {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.controls__fieldset {
+  display: flex;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.controls__radio {
+  gap: 40px;
+  margin-right: 52px;
+}
+
+.controls__launch {
+  gap: 12px;
+  margin-right: 80px;
+}
+
+.controls__button {
+  min-width: 205px;
+}
+
+.display {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 48px;
+}
