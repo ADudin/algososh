@@ -27,6 +27,7 @@
 }
 
 .display {
+  min-height: 320px;
   list-style: none;
   display: flex;
   justify-content: center;

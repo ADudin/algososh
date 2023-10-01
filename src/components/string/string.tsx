@@ -5,6 +5,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
+import { DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
 interface IString {
@@ -63,13 +64,13 @@ export const StringComponent: React.FC = () => {
           };
 
           setStringValue([...modifiedArray]);
-        }, 1000);
-      }, 1000 * i);
+        }, DELAY_IN_MS);
+      }, DELAY_IN_MS * i);
 
       setTimeout(() => {
         setValue('');
         setLoader(false);
-      }, 1000 * modifiedArray.length / 2);
+      }, DELAY_IN_MS * modifiedArray.length / 2);
     }  
   };
 

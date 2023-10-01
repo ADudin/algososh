@@ -5,6 +5,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
 const MAX_INPUT_VALUE = 19;
@@ -36,11 +37,11 @@ export const FibonacciPage: React.FC = () => {
           setFibonacciChain([...fibonacciArray]);
         }
 
-      }, 500 * i);
+      }, SHORT_DELAY_IN_MS * i);
 
       setTimeout(() => {
         setLoader(false);
-      }, 500 * (Number(value)));
+      }, SHORT_DELAY_IN_MS * (Number(value)));
     };
     
   };
