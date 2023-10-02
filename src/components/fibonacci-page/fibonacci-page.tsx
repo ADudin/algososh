@@ -79,8 +79,8 @@ export const FibonacciPage: React.FC = () => {
             <Circle 
               letter={item.toString()} 
               state={ElementStates.Default}
+              index={i}
             />
-            <span>{i}</span>
           </li>) :
           ''
         }

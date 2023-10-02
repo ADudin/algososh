@@ -5,7 +5,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Column } from "../ui/column/column";
-import { getRandomArr } from "../../utils";
+import { getRandomArr, setStepTimeout } from "../../utils";
 
 import { Direction } from "../../types/direction";
 import { SortingMethods } from "../../types/sorting-method";
@@ -62,8 +62,6 @@ export const SortingPage: React.FC = () => {
       sortingMethod: evt.target.value
     });
   };
-
-  const setStepTimeout = (time: number) => new Promise((res) => setTimeout(res, time));
 
   const renderBubbleSort = async (arr: ISortingArrayElement[], sortingDirection: Direction): Promise<ISortingArrayElement[]> => {
     for (let i = 0; i < arr.length; i++) {

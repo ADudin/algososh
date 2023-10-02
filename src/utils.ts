@@ -15,3 +15,5 @@ export const getRandomArr = (minLen: number, maxLen: number, minElValue: number,
 
   return randomArr;
 };
+
+export const setStepTimeout = (time: number) => new Promise((res) => setTimeout(res, time));
