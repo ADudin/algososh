@@ -27,7 +27,7 @@ export const StackPage: React.FC = () => {
   const [isAddLoading, setIsAddLoading] = useState(false);
   const [isRemoveLoading, setIsRemoveLoading] = useState(false);
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     evt.preventDefault();
     setValue(evt.target.value);
   };
