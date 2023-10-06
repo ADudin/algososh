@@ -102,6 +102,36 @@ export const QueuePage: React.FC = () => {
     renderInitial();
   };
 
+  const onDequeue = async () => {
+    setIsRemoveLoading(true);
+
+    const head = queue.getHead();
+    const tail = queue.getTail();
+
+    if (head.index !== tail.index) {
+      queue.dequeue();
+      
+      queueArr[queue.getHead().index - 1] = {
+        ...queueArr[queue.getHead().index - 1],
+        state: ElementStates.Changing
+      };
+
+      setQueueArr([...queueArr]);
+
+      await setStepTimeout(SHORT_DELAY_IN_MS);
+
+      queueArr[queue.getHead().index - 1] = initialQueueElement;
+      queueArr[queue.getHead().index].head = true;
+
+      setQueueArr([...queueArr]);
+    } else {
+      queue.clear();
+      renderInitial();
+    };
+
+    setIsRemoveLoading(false);
+  };
+
   return (
     <SolutionLayout title="Очередь">
       <form className={styles.container}>
@@ -129,6 +159,7 @@ export const QueuePage: React.FC = () => {
             text="Удалить"
             isLoader={isRemoveLoading}
             disabled={queue.getLength() === 0}
+            onClick={onDequeue}
           />
         </div>
 

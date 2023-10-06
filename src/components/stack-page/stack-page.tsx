@@ -1,5 +1,5 @@
 import styles from "./stack-page.module.css";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useMemo } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 
 import { Input } from "../ui/input/input";
@@ -20,7 +20,7 @@ const MAX_INPUT_SYMBOLS_LENGTH = 4;
 
 export const StackPage: React.FC = () => {
 
-  const stack = new Stack<string>();
+  const stack = useMemo(() => new Stack<string>(), []);
   
   const [value, setValue] = useState('');
   const [stackArr, setStackArr] = useState<IStackElement[]>([]);
