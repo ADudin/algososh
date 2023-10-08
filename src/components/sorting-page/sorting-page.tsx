@@ -203,6 +203,7 @@ export const SortingPage: React.FC = () => {
             extraClass={styles.controls__button}
             onClick={() => renderSort(Direction.Ascending)}
             isLoader={isLoading === Direction.Ascending}
+            disabled={isLoading === Direction.Descending}
           />
           <Button 
             text='По убыванию' 
@@ -210,6 +211,7 @@ export const SortingPage: React.FC = () => {
             extraClass={styles.controls__button}
             onClick={() => renderSort(Direction.Descending)}
             isLoader={isLoading === Direction.Descending}
+            disabled={isLoading === Direction.Ascending}
           />
         </fieldset>
 
@@ -217,6 +219,7 @@ export const SortingPage: React.FC = () => {
           text="Новый массив"
           extraClass={styles.controls__button}
           onClick={setNewArray}
+          disabled={isLoading === Direction.Descending || isLoading === Direction.Ascending}
         />
 
       </form>

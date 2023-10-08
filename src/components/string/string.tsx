@@ -78,17 +78,14 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title="Строка">
       <form onSubmit={onSubmit} className={styles.container}>
 
-        <div className={styles.input__container}>
-
-          <Input
-            maxLength={MAX_INPUT_SYMBOLS_LENGTH}
-            onChange={handleChange}
-            value={value}
-          />
-
-          <p className={styles.input__paragraph}>{`Максимум — ${MAX_INPUT_SYMBOLS_LENGTH} символов`}</p>
-
-        </div>
+        <Input
+          type='text'
+          maxLength={MAX_INPUT_SYMBOLS_LENGTH}
+          isLimitText={true}
+          onChange={handleChange}
+          value={value}
+          disabled={loader}
+        />
 
         <Button 
           text='Развернуть'

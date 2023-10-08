@@ -143,6 +143,7 @@ export const QueuePage: React.FC = () => {
               extraClass={styles.input}
               value={value}
               onChange={handleChange}
+              disabled={isAddLoading || isRemoveLoading}
             />
 
             <p className={styles.input__paragraph}>{`Максимум — ${MAX_INPUT_SYMBOLS_LENGTH} символа`}</p>
@@ -150,7 +151,7 @@ export const QueuePage: React.FC = () => {
           
           <Button 
             text="Добавить"
-            disabled={value === ''}
+            disabled={value === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={onEnqueue}
           />
@@ -158,14 +159,14 @@ export const QueuePage: React.FC = () => {
           <Button 
             text="Удалить"
             isLoader={isRemoveLoading}
-            disabled={queue.getLength() === 0}
+            disabled={queue.getLength() === 0 || isAddLoading}
             onClick={onDequeue}
           />
         </div>
 
         <Button 
           text="Очистить"
-          disabled={queue.getLength() === 0}
+          disabled={queue.getLength() === 0 || isAddLoading || isRemoveLoading}
           onClick={onClear}
         />
       </form>

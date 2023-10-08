@@ -2,12 +2,13 @@ interface IQueue<T> {
   enqueue: (item: T) => void;
   dequeue: () => void;
   clear: () => void;
-  getHead: () => number | null;
-  getTail: () => number | null;
+  getHead: () => {value: T | string; index: number};
+  getTail: () => {value: T | string; index: number};
   getLength: () => number;
+  getElements: () => (string| T)[];
 };
 
-export class Queue<T> {
+export class Queue<T> implements IQueue<T> {
   array: (T | string)[];
   head = 0;
   tail = 0;
@@ -58,5 +59,9 @@ export class Queue<T> {
 
   getLength = () => {
     return this.length;
+  };
+
+  getElements = () => {
+    return this.array;
   };
 };

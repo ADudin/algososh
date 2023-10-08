@@ -68,27 +68,25 @@ export const StackPage: React.FC = () => {
       <form className={styles.container}>
         <div className={styles.controls__container}>
 
-          <div className={styles.input__container}>
-            <Input 
-              maxLength={MAX_INPUT_SYMBOLS_LENGTH}
-              extraClass={styles.input}
-              value={value}
-              onChange={handleChange}
-            />
-
-            <p className={styles.input__paragraph}>{`Максимум — ${MAX_INPUT_SYMBOLS_LENGTH} символа`}</p>
-          </div>
+          <Input 
+            maxLength={MAX_INPUT_SYMBOLS_LENGTH}
+            extraClass={styles.input}
+            value={value}
+            onChange={handleChange}
+            isLimitText={true}
+            disabled={isAddLoading || isRemoveLoading}
+          />
           
           <Button 
             text="Добавить"
-            disabled={value === ''}
+            disabled={value === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={addElement}
           />
 
           <Button 
             text="Удалить"
-            disabled={stackArr.length === 0}
+            disabled={stackArr.length === 0 || isAddLoading}
             isLoader={isRemoveLoading}
             onClick={removeElement}
           />
@@ -96,7 +94,7 @@ export const StackPage: React.FC = () => {
 
         <Button 
           text="Очистить"
-          disabled={stackArr.length === 0}
+          disabled={stackArr.length === 0 || isAddLoading || isRemoveLoading}
           onClick={onReset}
         />
       </form>
