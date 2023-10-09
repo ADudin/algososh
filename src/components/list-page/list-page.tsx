@@ -396,7 +396,7 @@ export const ListPage: React.FC = () => {
             disabled={
               indexValue === '' || 
               inputValue === '' ||
-              Number(indexValue) > linkedList.getSize() ||
+              Number(indexValue) >= linkedList.getSize() ||
               Number(indexValue) < 0 ||
               isHeadAddLoading ||
               isTailAddLoading ||
