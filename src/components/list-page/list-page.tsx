@@ -1,5 +1,5 @@
 import styles from "./list-page.module.css";
-import React, {useState, useEffect, ChangeEvent, useMemo} from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 
 import { Input } from "../ui/input/input";
@@ -9,6 +9,7 @@ import { ArrowIcon } from "../ui/icons/arrow-icon";
 import { getRandomArr } from "../../utils";
 import { setStepTimeout } from "../../utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { useForm } from "../../hooks/useForm";
 
 import { ElementStates } from "../../types/element-states";
 import { LinkedList } from "./list";
@@ -17,7 +18,7 @@ interface IListArrayElement {
   value: string;
   state: ElementStates;
   head: string | React.ReactElement | null;
-  tail: string | React.ReactElement | null
+  tail: string | React.ReactElement | null;
 };
 
 
@@ -44,8 +45,6 @@ const getInitialArray = ():IListArrayElement[] => {
 
 export const ListPage: React.FC = () => {
   const [listArray, setListArray] = useState<IListArrayElement[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [indexValue, setIndexValue] = useState<string>('');
   const [isHeadAddLoading, setIsHeadAddLoading] = useState(false);
   const [isTailAddLoading, setIsTailAddLoading] = useState(false);
   const [isHeadRemoveLoading, setIsHeadRemoveLoading] = useState(false);
@@ -53,27 +52,22 @@ export const ListPage: React.FC = () => {
   const [isAddByIndexLoading, setIsAddByIndexLoading] = useState(false);
   const [isRemoveByIndexLoading, setIsRemoveByIndexLoading] = useState(false);
 
+  const { values, handleChange, setValues } = useForm({
+    inputValue: '',
+    indexValue: ''
+  });
+
   const linkedList = useMemo(() => new LinkedList(getInitialArray()), []);
 
   useEffect(() => {
     setListArray([...linkedList.toArray()]);
   }, [linkedList]);
 
-  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    evt.preventDefault();
-    setInputValue(evt.target.value);
-  };
-
-  const handleIndexChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    evt.preventDefault();
-    setIndexValue(evt.target.value);
-  };
-
   const onHeadAdd = async () => {
     setIsHeadAddLoading(true);
 
     if (linkedList.head) {
-      linkedList.head.value.head = <Circle letter={inputValue} state={ElementStates.Changing} isSmall={true} />;
+      linkedList.head.value.head = <Circle letter={values.inputValue} state={ElementStates.Changing} isSmall={true} />;
     }
 
     setListArray([...linkedList.toArray()]);
@@ -81,7 +75,7 @@ export const ListPage: React.FC = () => {
     await setStepTimeout(SHORT_DELAY_IN_MS);
 
     const newArrayElement: IListArrayElement = {
-      value: inputValue,
+      value: values.inputValue,
       state: ElementStates.Modified,
       head: 'head',
       tail: linkedList.head ? null : 'tail'
@@ -102,7 +96,7 @@ export const ListPage: React.FC = () => {
     }
 
     setListArray([...linkedList.toArray()]);
-    setInputValue('');
+    setValues({ ...values, inputValue: '' });
     setIsHeadAddLoading(false);
   };
 
@@ -110,7 +104,7 @@ export const ListPage: React.FC = () => {
     setIsTailAddLoading(true);
 
     if (linkedList.tail) {
-      linkedList.tail.value.head = <Circle letter={inputValue} state={ElementStates.Changing} isSmall={true} />; 
+      linkedList.tail.value.head = <Circle letter={values.inputValue} state={ElementStates.Changing} isSmall={true} />; 
     }
 
     setListArray([...linkedList.toArray()]);
@@ -118,7 +112,7 @@ export const ListPage: React.FC = () => {
     await setStepTimeout(SHORT_DELAY_IN_MS);
 
     const newArrayElement: IListArrayElement = {
-      value: inputValue,
+      value: values.inputValue,
       state: ElementStates.Modified,
       head: linkedList.head ? null : 'head',
       tail: 'tail'
@@ -143,7 +137,7 @@ export const ListPage: React.FC = () => {
       linkedList.tail.value.state = ElementStates.Default;
     };
 
-    setInputValue('');
+    setValues({ ...values, inputValue: '' });
     setIsTailAddLoading(false);
   };
 
@@ -202,9 +196,9 @@ export const ListPage: React.FC = () => {
     setIsAddByIndexLoading(true);
 
     const array = linkedList.toArray();
-    const index = Number(indexValue);
+    const index = Number(values.indexValue);
     const newArrayElement: IListArrayElement = {
-      value: inputValue,
+      value: values.inputValue,
       state: ElementStates.Default,
       head: linkedList.head ? null : 'head',
       tail: linkedList.tail ? null : 'tail'
@@ -216,7 +210,7 @@ export const ListPage: React.FC = () => {
       let tempHead = array[i].head;
       array[i] = {
         ...array[i],
-        head: <Circle letter={inputValue} state={ElementStates.Changing} isSmall={true} />
+        head: <Circle letter={values.inputValue} state={ElementStates.Changing} isSmall={true} />
       }
 
       if (i > 0) {
@@ -241,7 +235,7 @@ export const ListPage: React.FC = () => {
     }
 
     array.splice(index, 0, {
-      value: inputValue,
+      value: values.inputValue,
       state: ElementStates.Modified,
       head: linkedList.head ? null : 'head',
       tail: linkedList.tail ? null : 'tail'
@@ -262,7 +256,7 @@ export const ListPage: React.FC = () => {
     setIsRemoveByIndexLoading(true);
 
     const array = linkedList.toArray();
-    const index = Number(indexValue);
+    const index = Number(values.indexValue);
 
     linkedList.deleteByIndex(index);
 
@@ -296,12 +290,13 @@ export const ListPage: React.FC = () => {
         <div className={styles.controls__container}>
           <Input 
             extraClass={styles.input}
+            name="inputValue"
             type="text"
             isLimitText={true}
             maxLength={MAX_INPUT_SYMBOLS_LENGTH}
             placeholder="Введите значение"
-            value={inputValue}
-            onChange={handleInputChange}
+            value={values.inputValue}
+            onChange={handleChange}
             disabled={
               isHeadAddLoading ||
               isTailAddLoading ||
@@ -318,7 +313,7 @@ export const ListPage: React.FC = () => {
             onClick={onHeadAdd}
             isLoader={isHeadAddLoading}
             disabled={
-              inputValue === '' ||
+              values.inputValue === '' ||
               isTailAddLoading ||
               isHeadRemoveLoading ||
               isTailRemoveLoading ||
@@ -333,7 +328,7 @@ export const ListPage: React.FC = () => {
             onClick={onTailAdd}
             isLoader={isTailAddLoading}
             disabled={
-              inputValue === '' ||
+              values.inputValue === '' ||
               isHeadAddLoading ||
               isHeadRemoveLoading ||
               isTailRemoveLoading ||
@@ -374,10 +369,11 @@ export const ListPage: React.FC = () => {
         
           <Input 
             extraClass={styles.input}
+            name="indexValue"
             type="number"
             placeholder="Введите индекс"
-            value={indexValue}
-            onChange={handleIndexChange}
+            value={values.indexValue}
+            onChange={handleChange}
             disabled={
               isHeadAddLoading ||
               isTailAddLoading ||
@@ -394,10 +390,10 @@ export const ListPage: React.FC = () => {
             onClick={onAddByIndex}
             isLoader={isAddByIndexLoading}
             disabled={
-              indexValue === '' || 
-              inputValue === '' ||
-              Number(indexValue) >= linkedList.getSize() ||
-              Number(indexValue) < 0 ||
+              values.indexValue === '' || 
+              values.inputValue === '' ||
+              Number(values.indexValue) >= linkedList.getSize() ||
+              Number(values.indexValue) < 0 ||
               isHeadAddLoading ||
               isTailAddLoading ||
               isHeadRemoveLoading ||
@@ -412,9 +408,9 @@ export const ListPage: React.FC = () => {
             onClick={onRemoveByIndex}
             isLoader={isRemoveByIndexLoading}
             disabled={
-              indexValue === '' || 
-              Number(indexValue) > linkedList.getSize() - 1 ||
-              Number(indexValue) < 0 ||
+              values.indexValue === '' || 
+              Number(values.indexValue) > linkedList.getSize() - 1 ||
+              Number(values.indexValue) < 0 ||
               isHeadAddLoading ||
               isTailAddLoading ||
               isHeadRemoveLoading ||

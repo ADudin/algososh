@@ -1,5 +1,5 @@
 import styles from "./stack-page.module.css";
-import React, { useState, ChangeEvent, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 
 import { Input } from "../ui/input/input";
@@ -8,6 +8,7 @@ import { Circle } from "../ui/circle/circle";
 import { setStepTimeout } from "../../utils";
 import { Stack } from "./stack";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { useForm } from "../../hooks/useForm";
 
 import { ElementStates } from "../../types/element-states";
 
@@ -21,26 +22,21 @@ const MAX_INPUT_SYMBOLS_LENGTH = 4;
 export const StackPage: React.FC = () => {
 
   const stack = useMemo(() => new Stack<string>(), []);
+  const { values, handleChange, setValues } = useForm({ stackValue: '' });
   
-  const [value, setValue] = useState('');
   const [stackArr, setStackArr] = useState<IStackElement[]>([]);
   const [isAddLoading, setIsAddLoading] = useState(false);
   const [isRemoveLoading, setIsRemoveLoading] = useState(false);
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    evt.preventDefault();
-    setValue(evt.target.value);
-  };
-
   const addElement = async () => {
     setIsAddLoading(true);
-    stack.push(value);
+    stack.push(values.stackValue);
     stackArr.push({
-      value: value,
+      value: values.stackValue,
       state: ElementStates.Changing
     });
     setStackArr([...stackArr]);
-    setValue('');
+    setValues({ ...values, stackValue: '' });
     await setStepTimeout(SHORT_DELAY_IN_MS);
     stackArr[stackArr.length - 1].state = ElementStates.Default;
     setStackArr([...stackArr]);
@@ -69,9 +65,10 @@ export const StackPage: React.FC = () => {
         <div className={styles.controls__container}>
 
           <Input 
+            name="stackValue"
             maxLength={MAX_INPUT_SYMBOLS_LENGTH}
             extraClass={styles.input}
-            value={value}
+            value={values.stackValue}
             onChange={handleChange}
             isLimitText={true}
             disabled={isAddLoading || isRemoveLoading}
@@ -79,7 +76,7 @@ export const StackPage: React.FC = () => {
           
           <Button 
             text="Добавить"
-            disabled={value === '' || isRemoveLoading}
+            disabled={values.stackValue === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={addElement}
           />

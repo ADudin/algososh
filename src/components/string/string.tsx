@@ -6,6 +6,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { DELAY_IN_MS } from "../../constants/delays";
+import { useForm } from "../../hooks/useForm";
 import { ElementStates } from "../../types/element-states";
 
 interface IString {
@@ -17,21 +18,17 @@ const MAX_INPUT_SYMBOLS_LENGTH = 11;
 
 export const StringComponent: React.FC = () => {
   
-  const [value, setValue] = useState('');
   const [stringValue, setStringValue] = useState<IString[]>([]);
   const [loader, setLoader] = useState(false);
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    evt.preventDefault();
-    setValue(evt.target.value);
-  };
+  const { values, handleChange, setValues } = useForm({ strValue: '' });
 
   const onSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
     
     evt.preventDefault();
     setLoader(true);
       
-    const stringArray = value.split('').map(item => {
+    const stringArray = values.strValue.split('').map(item => {
       return {
         letter: item,
         state: ElementStates.Default
@@ -68,7 +65,7 @@ export const StringComponent: React.FC = () => {
       }, DELAY_IN_MS * i);
 
       setTimeout(() => {
-        setValue('');
+        setValues({ ...values, strValue: '' });
         setLoader(false);
       }, DELAY_IN_MS * modifiedArray.length / 2);
     }  
@@ -80,18 +77,19 @@ export const StringComponent: React.FC = () => {
 
         <Input
           type='text'
+          name="strValue"
           maxLength={MAX_INPUT_SYMBOLS_LENGTH}
           isLimitText={true}
           onChange={handleChange}
-          value={value}
+          value={values.strValue}
           disabled={loader}
         />
 
         <Button 
           text='Развернуть'
           type='submit'
-          value={value}
-          disabled={value.length < 2}
+          value={values.strValue}
+          disabled={values.strValue.length < 2}
           isLoader={loader}
         />
 

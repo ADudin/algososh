@@ -5,6 +5,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
+import { useForm } from "../../hooks/useForm";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 
@@ -12,13 +13,9 @@ const MAX_INPUT_VALUE = 19;
 
 export const FibonacciPage: React.FC = () => {
   const [loader, setLoader] = useState(false);
-  const [value, setValue] = useState('');
   const [fibonacciChain, setFibonacciChain] = useState<number[]>([]);
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    evt.preventDefault();
-    setValue(evt.target.value);
-  };
+  const { values, handleChange, setValues} = useForm({ fibValue: '' });
 
   const onSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -26,7 +23,7 @@ export const FibonacciPage: React.FC = () => {
 
     const fibonacciArray: number[] = [];
 
-    for (let i = 0; i <= Number(value); i++) {
+    for (let i = 0; i <= Number(values.fibValue); i++) {
       setTimeout(() => {
 
         if (i === 0 || i === 1) {
@@ -41,9 +38,10 @@ export const FibonacciPage: React.FC = () => {
 
       setTimeout(() => {
         setLoader(false);
-      }, SHORT_DELAY_IN_MS * (Number(value)));
+      }, SHORT_DELAY_IN_MS * (Number(values.fibValue)));
     };
     
+    setValues({ ...values, fibValue: '' });
   };
 
   return (
@@ -52,7 +50,8 @@ export const FibonacciPage: React.FC = () => {
 
       <Input
         type='number'
-        value={value}
+        name="fibValue"
+        value={values.fibValue}
         onChange={handleChange}
         disabled={loader}
         isLimitText={true}
@@ -62,8 +61,8 @@ export const FibonacciPage: React.FC = () => {
       <Button 
         text='Рассчитать'
         type='submit'
-        value={value}
-        disabled={value === '' || Number(value) === 0 || Number(value) > MAX_INPUT_VALUE}
+        value={values.fibValue}
+        disabled={values.fibValue === '' || Number(values.fibValue) === 0 || Number(values.fibValue) > MAX_INPUT_VALUE}
         isLoader={loader}
       />
      </form>

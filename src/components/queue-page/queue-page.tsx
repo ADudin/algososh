@@ -1,5 +1,5 @@
 import styles from "./queue-page.module.css";
-import React, { useState, ChangeEvent, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 
 import { Input } from "../ui/input/input";
@@ -8,6 +8,7 @@ import { Circle } from "../ui/circle/circle";
 import { setStepTimeout } from "../../utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { Queue } from "./queue";
+import { useForm } from "../../hooks/useForm";
 
 import { ElementStates } from "../../types/element-states";
 
@@ -22,11 +23,12 @@ const MAX_INPUT_SYMBOLS_LENGTH = 4;
 const QUEUE_ARR_LENGTH = 7; 
 
 export const QueuePage: React.FC = () => {
-
-  const [value, setValue] = useState('');
+  
   const [isAddLoading, setIsAddLoading] = useState(false);
   const [isRemoveLoading, setIsRemoveLoading] = useState(false);
   const [queueArr, setQueueArr] = useState<IQueueArrElement[]>([]);
+
+  const { values, handleChange, setValues } = useForm({ queueValue: '' });
 
   const queue = useMemo(() => new Queue<string>(QUEUE_ARR_LENGTH), []);
 
@@ -47,11 +49,6 @@ export const QueuePage: React.FC = () => {
     setQueueArr([...initialQueue]);
   };
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>): void => {
-    evt.preventDefault();
-    setValue(evt.target.value);
-  };
-
   useEffect(() => {
     renderInitial();
   }, []);
@@ -59,8 +56,8 @@ export const QueuePage: React.FC = () => {
   const onEnqueue = async () => {
     setIsAddLoading(true);
 
-    if (value !== '' && queue.getTail().index !== QUEUE_ARR_LENGTH - 1) {
-      queue.enqueue(value);
+    if (values.queueValue !== '' && queue.getTail().index !== QUEUE_ARR_LENGTH - 1) {
+      queue.enqueue(values.queueValue);
 
       const head = queue.getHead();
       const tail = queue.getTail();
@@ -82,7 +79,7 @@ export const QueuePage: React.FC = () => {
         state: ElementStates.Changing
       };
 
-      setValue('');
+      setValues({ ...values, queueValue: ''});
       setQueueArr([...queueArr]);
 
       await setStepTimeout(SHORT_DELAY_IN_MS);
@@ -139,9 +136,10 @@ export const QueuePage: React.FC = () => {
 
           <div className={styles.input__container}>
             <Input 
+              name="queueValue"
               maxLength={MAX_INPUT_SYMBOLS_LENGTH}
               extraClass={styles.input}
-              value={value}
+              value={values.queueValue}
               onChange={handleChange}
               disabled={isAddLoading || isRemoveLoading}
             />
@@ -151,7 +149,7 @@ export const QueuePage: React.FC = () => {
           
           <Button 
             text="Добавить"
-            disabled={value === '' || isRemoveLoading}
+            disabled={values.queueValue === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={onEnqueue}
           />
