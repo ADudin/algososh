@@ -1,0 +1,23 @@
+.container {
+  max-width: 567px;
+  display: flex;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.display__list {
+  max-width: 944px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 48px;
+  margin: 48px auto 0 auto;
+  padding: 0;
+}
+
+.display__item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

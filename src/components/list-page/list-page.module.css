@@ -1,0 +1,35 @@
+.container {
+  width: fit-content;
+  display: flex;
+  gap: 80px;
+  margin: 0 auto;
+}
+
+.controls__container {
+  max-width: 952px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.input {
+  width: 204px;
+}
+
+.display__list {
+  min-height: 170px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 90px auto 0 auto;
+  padding: 0;
+}
+
+.dispaly__listElement {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
