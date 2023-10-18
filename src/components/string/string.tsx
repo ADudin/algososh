@@ -73,7 +73,7 @@ export const StringComponent: React.FC = () => {
 
   return (
     <SolutionLayout title="Строка">
-      <form onSubmit={onSubmit} className={styles.container}>
+      <form onSubmit={onSubmit} className={styles.container} data-testid='form'>
 
         <Input
           type='text'
@@ -83,23 +83,29 @@ export const StringComponent: React.FC = () => {
           onChange={handleChange}
           value={values.strValue}
           disabled={loader}
+          data-testid='input'
         />
 
         <Button 
           text='Развернуть'
           type='submit'
           value={values.strValue}
-          disabled={values.strValue.length < 2}
+          disabled={values.strValue.length < 1}
           isLoader={loader}
+          data-testid='submitButton'
         />
 
       </form>
 
-      <div className={styles.display}>
+      <div className={styles.display} data-testid='container'>
         {
-          stringValue.length > 1 ?
-          stringValue.map((item, i) => <Circle key={i} letter={item.letter} state={item.state}/>) :
-          ''
+          stringValue.map((item, i) => 
+          <div key={i} data-testid='circle'>
+            <Circle 
+              letter={item.letter} 
+              state={item.state}
+            />
+          </div>)
         }
       </div>
     </SolutionLayout>
