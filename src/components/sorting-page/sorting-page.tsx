@@ -187,12 +187,14 @@ export const SortingPage: React.FC = () => {
             value={SortingMethods.Selection}
             onChange={setSortingMethod}
             defaultChecked
+            data-testid='selectionRadio'
           />
           <RadioInput 
             label='Пузырёк'
             name='sorting method'
             value={SortingMethods.Bubble}
             onChange={setSortingMethod}
+            data-testid='bubbleRadio'
           />
         </fieldset>
 
@@ -204,6 +206,7 @@ export const SortingPage: React.FC = () => {
             onClick={() => renderSort(Direction.Ascending)}
             isLoader={isLoading === Direction.Ascending}
             disabled={isLoading === Direction.Descending}
+            data-testid='ascendingButton'
           />
           <Button 
             text='По убыванию' 
@@ -212,6 +215,7 @@ export const SortingPage: React.FC = () => {
             onClick={() => renderSort(Direction.Descending)}
             isLoader={isLoading === Direction.Descending}
             disabled={isLoading === Direction.Ascending}
+            data-testid='descendingButton'
           />
         </fieldset>
 
@@ -220,18 +224,20 @@ export const SortingPage: React.FC = () => {
           extraClass={styles.controls__button}
           onClick={setNewArray}
           disabled={isLoading === Direction.Descending || isLoading === Direction.Ascending}
+          data-testid='newArrayButton'
         />
 
       </form>
 
-      <div className={styles.display}>
+      <div className={styles.display} data-testid='container'>
         {
           sortingPageState.array.map((item, i) => 
-          <Column 
-            key={i} 
-            index={item.index}
-            state={item.state}
-          />)
+          <div key={i} data-testid='arrayElement'>
+            <Column  
+              index={item.index}
+              state={item.state}
+            />
+          </div>)
         }
       </div>
 
