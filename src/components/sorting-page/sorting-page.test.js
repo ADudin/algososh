@@ -1,15 +1,27 @@
 import { 
   render,
   screen,
-  fireEvent,
-  waitFor
+  fireEvent
 } from "@testing-library/react";
 
 import { BrowserRouter } from "react-router-dom";
 
 import { SortingPage } from "./sorting-page";
+import { renderBubbleSort, renderSelectionSort } from "../../utils";
+import { Direction } from "../../types/direction";
+import { ElementStates } from "../../types/element-states";
 
 describe('component: SortingPage', () => {
+
+  const mockSetState = (state) => {
+    let result = [];
+
+    result = state;
+  };
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('should render default SortingPage with empty array correctly', () => {
     render(
@@ -68,37 +80,55 @@ describe('component: SortingPage', () => {
     expect(MIN_ARRAY_LENGTH <= arrayElements.length && arrayElements.length <= MAX_ARRAY_LENGTH);
   });
 
-  it('should render ascending sorted array correctly', async () => {
-    render(
-      <BrowserRouter>
-        <SortingPage />
-      </BrowserRouter>
-    );
-
-    screen.getByTestId('newArrayButton').click();
-    screen.getByTestId('ascendingButton').click();
-
-    const arrayElements = screen.getAllByTestId('arrayElement');
-    const values = arrayElements.map(element => parseInt(element.textContent));
-    const sortedValues = [...values].sort((a, b) => a - b);
-
-    expect(sortedValues).toEqual(sortedValues);
+  it('should render ascending sorted array using bubble sort correctly', async () => {
+    expect(await renderBubbleSort([
+      {index: 1, state: ElementStates.Default},
+      {index: 3, state: ElementStates.Default},
+      {index: 2, state: ElementStates.Default}
+    ], Direction.Ascending, mockSetState))
+    .toEqual([
+      {index: 1, state: ElementStates.Modified},
+      {index: 2, state: ElementStates.Modified},
+      {index: 3, state: ElementStates.Modified}
+    ]);
   });
 
-  it('should render descending sorted array correctly', async () => {
-    render(
-      <BrowserRouter>
-        <SortingPage />
-      </BrowserRouter>
-    );
+  it('should render desscending sorted array using bubble sort correctly', async () => {
+    expect(await renderBubbleSort([
+      {index: 1, state: ElementStates.Default},
+      {index: 3, state: ElementStates.Default},
+      {index: 2, state: ElementStates.Default}
+    ], Direction.Descending, mockSetState))
+    .toEqual([
+      {index: 3, state: ElementStates.Modified},
+      {index: 2, state: ElementStates.Modified},
+      {index: 1, state: ElementStates.Modified}
+    ]);
+  });
 
-    screen.getByTestId('newArrayButton').click();
-    screen.getByTestId('descendingButton').click();
+  it('should render ascending sorted array using selection sort correctly', async () => {
+    expect(await renderSelectionSort([
+      {index: 1, state: ElementStates.Default},
+      {index: 3, state: ElementStates.Default},
+      {index: 2, state: ElementStates.Default}
+    ], Direction.Ascending, mockSetState))
+    .toEqual([
+      {index: 1, state: ElementStates.Modified},
+      {index: 2, state: ElementStates.Modified},
+      {index: 3, state: ElementStates.Modified}
+    ]);
+  });
 
-    const arrayElements = screen.getAllByTestId('arrayElement');
-    const values = arrayElements.map(element => parseInt(element.textContent));
-    const sortedValues = [...values].sort((a, b) => b - a);
-    
-    expect(sortedValues).toEqual(sortedValues);
+  it('should render descending sorted array using selection sort correctly', async () => {
+    expect(await renderSelectionSort([
+      {index: 1, state: ElementStates.Default},
+      {index: 3, state: ElementStates.Default},
+      {index: 2, state: ElementStates.Default}
+    ], Direction.Descending, mockSetState))
+    .toEqual([
+      {index: 3, state: ElementStates.Modified},
+      {index: 2, state: ElementStates.Modified},
+      {index: 1, state: ElementStates.Modified}
+    ]);
   });
 });

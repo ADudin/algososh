@@ -1,5 +1,5 @@
 import styles from "./string.module.css";
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 
 import { Input } from "../ui/input/input";
@@ -8,6 +8,7 @@ import { Circle } from "../ui/circle/circle";
 import { DELAY_IN_MS } from "../../constants/delays";
 import { useForm } from "../../hooks/useForm";
 import { ElementStates } from "../../types/element-states";
+import { setStepTimeout } from "../../utils";
 
 interface IString {
   letter: string;
@@ -23,11 +24,7 @@ export const StringComponent: React.FC = () => {
 
   const { values, handleChange, setValues } = useForm({ strValue: '' });
 
-  const onSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
-    
-    evt.preventDefault();
-    setLoader(true);
-      
+  const reverse = async () => {
     const stringArray = values.strValue.split('').map(item => {
       return {
         letter: item,
@@ -40,35 +37,37 @@ export const StringComponent: React.FC = () => {
     let modifiedArray = [...stringArray];
 
     for (let i = 0; i < modifiedArray.length / 2; i++) {
-      setTimeout(() => {
-        let start = i;
-        let end = modifiedArray.length - 1 - i;
-        modifiedArray[start].state = ElementStates.Changing;
-        modifiedArray[end].state = ElementStates.Changing;
-        setStringValue([...modifiedArray]);
+      let start = i;
+      let end = modifiedArray.length - 1 - i;
+      modifiedArray[start].state = ElementStates.Changing;
+      modifiedArray[end].state = ElementStates.Changing;
+      setStringValue([...modifiedArray]);
 
-        setTimeout(() => {
-          let temp = modifiedArray[start].letter;
+      await setStepTimeout(DELAY_IN_MS);
+      let temp = modifiedArray[start].letter;
 
-          modifiedArray[start] = {
-            letter: modifiedArray[end].letter, 
-            state: ElementStates.Modified
-          };
+      modifiedArray[start] = {
+        letter: modifiedArray[end].letter, 
+        state: ElementStates.Modified
+      };
 
-          modifiedArray[end] = {
-            letter: temp,
-            state: ElementStates.Modified
-          };
+      modifiedArray[end] = {
+        letter: temp,
+        state: ElementStates.Modified
+      };
 
-          setStringValue([...modifiedArray]);
-        }, DELAY_IN_MS);
-      }, DELAY_IN_MS * i);
+      setStringValue([...modifiedArray]);
+    }
 
-      setTimeout(() => {
-        setValues({ ...values, strValue: '' });
-        setLoader(false);
-      }, DELAY_IN_MS * modifiedArray.length / 2);
-    }  
+    setValues({ ...values, strValue: '' });
+    setLoader(false);
+  };
+
+  const onSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
+    
+    evt.preventDefault();
+    setLoader(true);
+    reverse();
   };
 
   return (

@@ -46,28 +46,28 @@ describe('component: StringComponent', () => {
     }
   });
 
-  // it('should render correctly reversed even quantity of symbols', async () => {
-  //   render(
-  //     <BrowserRouter>
-  //       <StringComponent />
-  //     </BrowserRouter>
-  //   );
+  it('should render correctly reversed even quantity of symbols', async () => {
+    render(
+      <BrowserRouter>
+        <StringComponent />
+      </BrowserRouter>
+    );
     
-  //   const input = screen.getByTestId('input');
-  //   const submitButton = screen.getByTestId('submitButton');
+    const input = screen.getByTestId('input');
+    const submitButton = screen.getByTestId('submitButton');
 
-  //   fireEvent.change(input, {
-  //     target: {value: 'test'}
-  //   });
-  //   fireEvent.click(submitButton);
+    fireEvent.change(input, {
+      target: {value: 'test'}
+    });
+    fireEvent.click(submitButton);
 
-  //   await waitFor(() => {
-  //     expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('t');
-  //     expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('s');
-  //     expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('e');
-  //     expect((screen.getAllByTestId('circle')[3])).toHaveTextContent('t');
-  //   }, {timeout: 3000});
-  // });
+    await waitFor(() => {
+      expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('t');
+      expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('s');
+      expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('e');
+      expect((screen.getAllByTestId('circle')[3])).toHaveTextContent('t');
+    }, {timeout: 3000});
+  });
 
   it('should render correctly odd quantity of symbols', () => {
     render(
@@ -101,20 +101,16 @@ describe('component: StringComponent', () => {
     const submitButton = screen.getByTestId('submitButton');
 
     fireEvent.change(input, {
-      target: {value: 'oddtest'}
+      target: {value: 'odd'}
     });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('t');
-      expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('s');
-      expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('e');
-      expect((screen.getAllByTestId('circle')[3])).toHaveTextContent('t');
-      expect((screen.getAllByTestId('circle')[4])).toHaveTextContent('d');
-      expect((screen.getAllByTestId('circle')[5])).toHaveTextContent('d');
-      expect((screen.getAllByTestId('circle')[6])).toHaveTextContent('o');
-    }, {timeout: 4000});
-  }, 5000);
+      expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('d');
+      expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('d');
+      expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('o');
+    }, {timeout: 3000});
+  });
 
   it('should render correctly with one symbol', () => {
     render(
