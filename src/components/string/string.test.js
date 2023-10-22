@@ -2,14 +2,27 @@ import {
   render, 
   screen, 
   fireEvent,
-  waitFor
+  waitFor,
+  act
 } from "@testing-library/react";
 
 import { BrowserRouter } from "react-router-dom";
 
 import { StringComponent } from "./string";
+import { reverse } from "../../utils";
+import { ElementStates } from "../../types/element-states";
 
 describe('component: StringComponent', () => {
+
+  const mockSetState = (state) => {
+    let result = [];
+
+    result = state;
+  };
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   
   it('should render default StringComponent correctly', () => {
     render(
@@ -46,29 +59,6 @@ describe('component: StringComponent', () => {
     }
   });
 
-  it('should render correctly reversed even quantity of symbols', async () => {
-    render(
-      <BrowserRouter>
-        <StringComponent />
-      </BrowserRouter>
-    );
-    
-    const input = screen.getByTestId('input');
-    const submitButton = screen.getByTestId('submitButton');
-
-    fireEvent.change(input, {
-      target: {value: 'test'}
-    });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('t');
-      expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('s');
-      expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('e');
-      expect((screen.getAllByTestId('circle')[3])).toHaveTextContent('t');
-    }, {timeout: 3000});
-  });
-
   it('should render correctly odd quantity of symbols', () => {
     render(
       <BrowserRouter>
@@ -88,28 +78,6 @@ describe('component: StringComponent', () => {
     for (let i = 0; i < ODD_TEST_DATA.length; i++) {
       expect((screen.getAllByTestId('circle')[i]).textContent === ODD_TEST_DATA[i]);
     }
-  });
-
-  it('should render correctly reversed odd quantity of symbols', async () => {
-    render(
-      <BrowserRouter>
-        <StringComponent />
-      </BrowserRouter>
-    );
-    
-    const input = screen.getByTestId('input');
-    const submitButton = screen.getByTestId('submitButton');
-
-    fireEvent.change(input, {
-      target: {value: 'odd'}
-    });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect((screen.getAllByTestId('circle')[0])).toHaveTextContent('d');
-      expect((screen.getAllByTestId('circle')[1])).toHaveTextContent('d');
-      expect((screen.getAllByTestId('circle')[2])).toHaveTextContent('o');
-    }, {timeout: 3000});
   });
 
   it('should render correctly with one symbol', () => {
@@ -148,6 +116,40 @@ describe('component: StringComponent', () => {
     fireEvent.click(submitButton);
 
     expect(screen.queryByTestId('circle')).toBeNull();
+  });
+
+  it('should render correctly reversed even quantity of symbols', async () => {
+    await act( async () => {
+      const reversedArray = await reverse([
+        {letter: 1, state: ElementStates.Default},
+        {letter: 2, state: ElementStates.Default},
+        {letter: 3, state: ElementStates.Default},
+        {letter: 4, state: ElementStates.Default}
+      ], mockSetState);
+
+      expect(reversedArray).toEqual([
+        {letter: 4, state: ElementStates.Modified},
+        {letter: 3, state: ElementStates.Modified},
+        {letter: 2, state: ElementStates.Modified},
+        {letter: 1, state: ElementStates.Modified}
+      ]);
+    });
+  });
+
+  it('should render correctly reversed odd quantity of symbols', async () => {
+    await act( async () => {
+      const reversedArray = await reverse([
+        {letter: 1, state: ElementStates.Default},
+        {letter: 2, state: ElementStates.Default},
+        {letter: 3, state: ElementStates.Default},
+      ], mockSetState);
+
+      expect(reversedArray).toEqual([
+        {letter: 3, state: ElementStates.Modified},
+        {letter: 2, state: ElementStates.Modified},
+        {letter: 1, state: ElementStates.Modified}
+      ]);
+    });
   });
 
 });

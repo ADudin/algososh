@@ -1,7 +1,7 @@
 import { ElementStates } from "./types/element-states";
 import { Direction } from "./types/direction";
 import { TSortingArrayElement, TSortingPageState } from "./types/sortig-page-state";
-
+import { TString } from "./types/string";
 import { DELAY_IN_MS } from "./constants/delays";
 
 const getRandomInteger = (a: number, b: number):number => {
@@ -44,6 +44,38 @@ export const setStepTimeout = (time: number) => new Promise((res) => setTimeout(
 //     signal?.addEventListener('abort', listener);
 //   });
 // };
+
+// === For string component ===
+
+export const reverse = async (array: TString[], setData: any) => {
+
+  for (let i = 0; i < array.length / 2; i++) {
+    let start = i;
+    let end = array.length - 1 - i;
+    array[start].state = ElementStates.Changing;
+    array[end].state = ElementStates.Changing;
+
+    setData([ ...array ]);
+
+    await setStepTimeout(DELAY_IN_MS);
+
+    let temp = array[start].letter;
+
+    array[start] = {
+      letter: array[end].letter, 
+      state: ElementStates.Modified
+    };
+
+    array[end] = {
+      letter: temp,
+      state: ElementStates.Modified
+    };
+
+    setData([ ...array ]);
+  }
+
+  return array;
+};
 
 // === For sorting page ===
 
