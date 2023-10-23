@@ -1,6 +1,7 @@
 import { 
   baseURL,
-  recursionURL
+  recursionURL,
+  fibonacciURL
 } from "../utils/constants";
 
 describe('app should work correctly with routes', () => {
@@ -21,7 +22,7 @@ describe('app should work correctly with routes', () => {
   it('should open fibonacci page correctly', () => {
     cy.get('[data-cy="fibonacciLink"]').click();
     cy.contains('Последовательность Фибоначчи');
-    cy.url().should('include', '/fibonacci');
+    cy.url().should('include', fibonacciURL);
   });
 
   it('should open sorting page correctly', () => {

@@ -1,5 +1,6 @@
 export const baseURL = 'http://localhost:3000';
 export const recursionURL = `${baseURL}/recursion`;
+export const fibonacciURL = `${baseURL}/fibonacci`;
 
 export const COLORS = {
   default: 'rgb(0, 50, 255)',

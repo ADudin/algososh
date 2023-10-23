@@ -64,6 +64,7 @@ export const FibonacciPage: React.FC = () => {
         value={values.fibValue}
         disabled={values.fibValue === '' || Number(values.fibValue) === 0 || Number(values.fibValue) > MAX_INPUT_VALUE}
         isLoader={loader}
+        data-testid='submitButton'
       />
      </form>
 
