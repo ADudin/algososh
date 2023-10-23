@@ -1,6 +1,9 @@
-import { baseURL } from "../utils/constants";
+import { 
+  baseURL,
+  recursionURL
+} from "../utils/constants";
 
-describe('app work correctly with routes', () => {
+describe('app should work correctly with routes', () => {
   beforeEach(() => {
     cy.visit(baseURL);
   });
@@ -12,7 +15,7 @@ describe('app work correctly with routes', () => {
   it('should open string component correctly', () => {
     cy.get('[data-cy="recursionLink"]').click();
     cy.contains('Строка');
-    cy.url().should('include', '/recursion');
+    cy.url().should('include', recursionURL);
   });
 
   it('should open fibonacci page correctly', () => {
