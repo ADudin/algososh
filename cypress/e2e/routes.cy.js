@@ -1,7 +1,9 @@
 import { 
   baseURL,
   recursionURL,
-  fibonacciURL
+  fibonacciURL,
+  sortingURL,
+  stackURL
 } from "../utils/constants";
 
 describe('app should work correctly with routes', () => {
@@ -28,13 +30,13 @@ describe('app should work correctly with routes', () => {
   it('should open sorting page correctly', () => {
     cy.get('[data-cy="sortingLink"]').click();
     cy.contains('Сортировка массива');
-    cy.url().should('include', '/sorting');
+    cy.url().should('include', sortingURL);
   });
 
   it('should open stack page correctly', () => {
     cy.get('[data-cy="stackLink"]').click();
     cy.contains('Стек');
-    cy.url().should('include', '/stack');
+    cy.url().should('include', stackURL);
   });
 
   it('should open queue page correctly', () => {
