@@ -3,7 +3,8 @@ import {
   recursionURL,
   fibonacciURL,
   sortingURL,
-  stackURL
+  stackURL,
+  queueURL
 } from "../utils/constants";
 
 describe('app should work correctly with routes', () => {
@@ -42,7 +43,7 @@ describe('app should work correctly with routes', () => {
   it('should open queue page correctly', () => {
     cy.get('[data-cy="queueLink"]').click();
     cy.contains('Очередь');
-    cy.url().should('include', '/queue');
+    cy.url().should('include', queueURL);
   });
 
   it('should open list page correctly', () => {
