@@ -4,7 +4,8 @@ import {
   fibonacciURL,
   sortingURL,
   stackURL,
-  queueURL
+  queueURL,
+  listURL
 } from "../utils/constants";
 
 describe('app should work correctly with routes', () => {
@@ -49,6 +50,6 @@ describe('app should work correctly with routes', () => {
   it('should open list page correctly', () => {
     cy.get('[data-cy="listLink"]').click();
     cy.contains('Связный список');
-    cy.url().should('include', '/list');
+    cy.url().should('include', listURL);
   });
 });

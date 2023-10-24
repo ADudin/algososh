@@ -4,6 +4,7 @@ export const fibonacciURL = `${baseURL}/fibonacci`;
 export const sortingURL = `${baseURL}/sorting`;
 export const stackURL = `${baseURL}/stack`;
 export const queueURL = `${baseURL}/queue`;
+export const listURL = `${baseURL}/list`;
 
 export const COLORS = {
   default: 'rgb(0, 50, 255)',
