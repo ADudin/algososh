@@ -1,10 +1,10 @@
-export const baseURL = 'http://localhost:3000';
-export const recursionURL = `${baseURL}/recursion`;
-export const fibonacciURL = `${baseURL}/fibonacci`;
-export const sortingURL = `${baseURL}/sorting`;
-export const stackURL = `${baseURL}/stack`;
-export const queueURL = `${baseURL}/queue`;
-export const listURL = `${baseURL}/list`;
+export const baseURL = '/';
+export const recursionURL = `/recursion`;
+export const fibonacciURL = `/fibonacci`;
+export const sortingURL = `/sorting`;
+export const stackURL = `/stack`;
+export const queueURL = `/queue`;
+export const listURL = `/list`;
 
 export const COLORS = {
   default: 'rgb(0, 50, 255)',
