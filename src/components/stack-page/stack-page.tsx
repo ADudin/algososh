@@ -79,6 +79,7 @@ export const StackPage: React.FC = () => {
             disabled={values.stackValue === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={addElement}
+            data-testid="addButton"
           />
 
           <Button 
@@ -86,6 +87,7 @@ export const StackPage: React.FC = () => {
             disabled={stackArr.length === 0 || isAddLoading}
             isLoader={isRemoveLoading}
             onClick={removeElement}
+            data-testid="removeButton"
           />
         </div>
 
@@ -93,6 +95,7 @@ export const StackPage: React.FC = () => {
           text="Очистить"
           disabled={stackArr.length === 0 || isAddLoading || isRemoveLoading}
           onClick={onReset}
+          data-testid="resetButton"
         />
       </form>
 

@@ -152,6 +152,7 @@ export const QueuePage: React.FC = () => {
             disabled={values.queueValue === '' || isRemoveLoading}
             isLoader={isAddLoading}
             onClick={onEnqueue}
+            data-testid="addButton"
           />
 
           <Button 
@@ -159,6 +160,7 @@ export const QueuePage: React.FC = () => {
             isLoader={isRemoveLoading}
             disabled={queue.getLength() === 0 || isAddLoading}
             onClick={onDequeue}
+            data-testid="removeButton"
           />
         </div>
 
@@ -166,6 +168,7 @@ export const QueuePage: React.FC = () => {
           text="Очистить"
           disabled={queue.getLength() === 0 || isAddLoading || isRemoveLoading}
           onClick={onClear}
+          data-testid="resetButton"
         />
       </form>
 
